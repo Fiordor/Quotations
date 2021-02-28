@@ -14,4 +14,6 @@
     <string name="quotation_sample_author">Esto es un ejemplo de autor</string>
     <string name="quotation_random_user">No soy nadie</string>
     <string name="favourite_cant_get_info">No se encuentra información sobre este autor</string>
+    <string name="favourite_take_a_breath">Respira un segundo!</string>
+    <string name="favourite_are_you_sure">Estás seguro de querer borrar esta cita?</string>
 </resources>

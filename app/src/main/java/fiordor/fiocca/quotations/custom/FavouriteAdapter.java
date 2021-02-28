@@ -16,21 +16,29 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
     private List<Quotation> quotations;
     private OnItemClickListener onItemClick;
+    private OnItemLongClickListener onItemLongClick;
 
-    public FavouriteAdapter(List<Quotation> quotations, OnItemClickListener onItemClick) {
+    public FavouriteAdapter(List<Quotation> quotations, OnItemClickListener onItemClick, OnItemLongClickListener onItemLongClick) {
         this.quotations = quotations;
         this.onItemClick = onItemClick;
+        this.onItemLongClick = onItemLongClick;
     }
 
     public Quotation getQuoteUsingListPosition(int position) {
         return quotations.get(position);
     }
 
+    public Quotation removeQuoteUsingListPosition(int position) {
+        Quotation q = quotations.remove(position);
+        notifyItemRemoved(position);
+        return q;
+    }
+
     @NonNull
     @Override
     public FavouriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.quotation_list_row, parent, false);
-        FavouriteAdapter.ViewHolder holder = new ViewHolder(view, onItemClick);
+        FavouriteAdapter.ViewHolder holder = new ViewHolder(view, onItemClick, onItemLongClick);
         return holder;
     }
 
@@ -50,22 +58,36 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         void onItemClickListener(int position);
     }
 
+    public interface OnItemLongClickListener {
+        void onItemLongClickListener(int position);
+    }
+
     static class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView quoteText;
         public TextView quoteAuthor;
         private OnItemClickListener onItemClick;
+        private OnItemLongClickListener onItemLongClick;
 
-        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClick) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClick, OnItemLongClickListener onItemLongClick) {
             super(itemView);
             quoteText = itemView.findViewById(R.id.tvQuoteText);
             quoteAuthor = itemView.findViewById(R.id.tvQuoteAuthor);
             this.onItemClick = onItemClick;
+            this.onItemLongClick = onItemLongClick;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onItemClick.onItemClickListener(getAdapterPosition());
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    onItemLongClick.onItemLongClickListener(getAdapterPosition());
+                    return true;
                 }
             });
         }

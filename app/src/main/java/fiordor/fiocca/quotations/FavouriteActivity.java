@@ -1,10 +1,12 @@
 package fiordor.fiocca.quotations;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -20,7 +22,7 @@ import java.util.List;
 import fiordor.fiocca.quotations.custom.FavouriteAdapter;
 import fiordor.fiocca.quotations.custom.Quotation;
 
-public class FavouriteActivity extends AppCompatActivity implements FavouriteAdapter.OnItemClickListener {
+public class FavouriteActivity extends AppCompatActivity implements FavouriteAdapter.OnItemClickListener, FavouriteAdapter.OnItemLongClickListener {
 
     private FavouriteAdapter quotationsAdapter;
 
@@ -37,7 +39,7 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         rv.addItemDecoration(decoration);
 
         ArrayList<Quotation> quotations = getMockQuotations();
-        quotationsAdapter = new FavouriteAdapter(quotations, this::onItemClickListener);
+        quotationsAdapter = new FavouriteAdapter(quotations, this::onItemClickListener, this::onItemLongClickListener);
         rv.setAdapter(quotationsAdapter);
     }
 
@@ -64,6 +66,23 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         } else {
             openAuthorWiki(URLEncoder.encode(author));
         }
+    }
+
+    @Override
+    public void onItemLongClickListener(int position) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.stat_sys_warning);
+        builder.setTitle(R.string.favourite_take_a_breath);
+        builder.setMessage(R.string.favourite_are_you_sure);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                quotationsAdapter.removeQuoteUsingListPosition(position);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.create().show();
     }
 
     public ArrayList<Quotation> getMockQuotations() {

@@ -15,4 +15,6 @@
     <string name="quotation_sample_author">This is a sample autor</string>
     <string name="quotation_random_user">Nameless One</string>
     <string name="favourite_cant_get_info">Can not find information about this author</string>
+    <string name="favourite_take_a_breath">Take a breath!</string>
+    <string name="favourite_are_you_sure">Are you sure that you want to delete this quotation?</string>
 </resources>

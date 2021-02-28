@@ -30,7 +30,7 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
     @Override
     public FavouriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.quotation_list_row, parent, false);
-        FavouriteAdapter.ViewHolder holder = new ViewHolder(view);
+        FavouriteAdapter.ViewHolder holder = new ViewHolder(view, onItemClick);
         return holder;
     }
 
@@ -54,11 +54,13 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
 
         public TextView quoteText;
         public TextView quoteAuthor;
+        private OnItemClickListener onItemClick;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnItemClickListener onItemClick) {
             super(itemView);
             quoteText = itemView.findViewById(R.id.tvQuoteText);
             quoteAuthor = itemView.findViewById(R.id.tvQuoteAuthor);
+            this.onItemClick = onItemClick;
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

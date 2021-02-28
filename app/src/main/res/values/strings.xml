@@ -14,4 +14,5 @@
     <string name="quotation_samlpe_quotation">This is a sample quotation</string>
     <string name="quotation_sample_author">This is a sample autor</string>
     <string name="quotation_random_user">Nameless One</string>
+    <string name="favourite_cant_get_info">Can not find information about this author</string>
 </resources>

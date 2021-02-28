@@ -13,4 +13,5 @@
     <string name="quotation_samlpe_quotation">Esto es un ejemplo de cita</string>
     <string name="quotation_sample_author">Esto es un ejemplo de autor</string>
     <string name="quotation_random_user">No soy nadie</string>
+    <string name="favourite_cant_get_info">No se encuentra información sobre este autor</string>
 </resources>

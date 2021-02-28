@@ -11,7 +11,9 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Special:Search?search=" + "Albert Einstein"));
+        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Special:Search?search=" + author));
 
         List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
 
@@ -58,9 +60,9 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         String author = quotationsAdapter.getQuoteUsingListPosition(position).getQuoteAuthor();
 
         if (author == null || author.isEmpty()) {
-
+            Toast.makeText(this, R.string.favourite_cant_get_info, Toast.LENGTH_LONG).show();
         } else {
-            openAuthorWiki(author);
+            openAuthorWiki(URLEncoder.encode(author));
         }
     }
 

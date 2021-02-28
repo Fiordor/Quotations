@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fiordor.fiocca.quotations">
+
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+
+            <data android:scheme="https" />
+        </intent>
+    </queries>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/name_activity_quotation"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Quotations">
+        <activity
+            android:name=".QuotationActivity"
+            android:label="@string/name_activity_random"/>
+        <activity
+            android:name=".FavouriteActivity"
+            android:label="@string/name_activity_favourite" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/name_activity_settings"
+            android:windowSoftInputMode="stateAlwaysHidden" />
+        <activity
+            android:name=".AboutActivity"
+            android:label="@string/name_activity_about" />
+        <activity android:name=".DashboardActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

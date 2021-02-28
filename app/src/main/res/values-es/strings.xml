@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="bt_dash_get">Solicitar cita</string>
+    <string name="bt_dash_favourite">Citas favoritas</string>
+    <string name="bt_dash_settings">Opciones</string>
+    <string name="bt_dash_about">Acerca de</string>
+    <string name="name_activity_random">Citas aleatorias</string>
+    <string name="name_activity_favourite">Citas favoritas</string>
+    <string name="name_activity_settings">Opciones</string>
+    <string name="name_activity_about">Acerca de</string>
+    <string name="favourite_bt_info">Información del autor</string>
+    <string name="quotation_hello">Hola %1s!\nPulsa Refrescar para solicitar una nueva cita</string>
+    <string name="quotation_samlpe_quotation">Esto es un ejemplo de cita</string>
+    <string name="quotation_sample_author">Esto es un ejemplo de autor</string>
+    <string name="quotation_random_user">No soy nadie</string>
+</resources>

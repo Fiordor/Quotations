@@ -24,6 +24,11 @@ public class FavouriteAdapter extends RecyclerView.Adapter<FavouriteAdapter.View
         this.onItemLongClick = onItemLongClick;
     }
 
+    public void clearAllList() {
+        quotations.clear();
+        notifyDataSetChanged();
+    }
+
     public Quotation getQuoteUsingListPosition(int position) {
         return quotations.get(position);
     }

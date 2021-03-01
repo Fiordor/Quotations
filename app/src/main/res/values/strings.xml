@@ -19,4 +19,6 @@
     <string name="favourite_are_you_sure">Are you sure that you want to delete this quotation?</string>
     <string name="quotation_menu_add">Add</string>
     <string name="quotation_menu_refresh">Refresh</string>
+    <string name="favourite_menu_delete">Clear All</string>
+    <string name="favourite_menu_are_you_sure">Are you sure that you want to delete ALL your favourte quotations?</string>
 </resources>

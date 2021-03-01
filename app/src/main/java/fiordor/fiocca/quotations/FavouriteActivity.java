@@ -1,5 +1,6 @@
 package fiordor.fiocca.quotations;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -12,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import java.net.URLEncoder;
@@ -56,6 +59,13 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.favourite_menu, menu);
+        return true;
+    }
+
+    @Override
     public void onItemClickListener(int position) {
 
         String author = quotationsAdapter.getQuoteUsingListPosition(position).getQuoteAuthor();
@@ -82,6 +92,29 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         });
         builder.setNegativeButton(android.R.string.no, null);
         builder.create().show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() != R.id.miCleanAllFavourite) {
+            return super.onOptionsItemSelected(item);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(android.R.drawable.stat_sys_warning);
+        builder.setTitle(R.string.favourite_take_a_breath);
+        builder.setMessage(R.string.favourite_menu_are_you_sure);
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                quotationsAdapter.clearAllList();
+                item.setVisible(false);
+            }
+        });
+        builder.setNegativeButton(android.R.string.no, null);
+        builder.create().show();
+        return true;
     }
 
     public ArrayList<Quotation> getMockQuotations() {

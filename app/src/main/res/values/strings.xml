@@ -17,4 +17,6 @@
     <string name="favourite_cant_get_info">Can not find information about this author</string>
     <string name="favourite_take_a_breath">Take a breath!</string>
     <string name="favourite_are_you_sure">Are you sure that you want to delete this quotation?</string>
+    <string name="quotation_menu_add">Add</string>
+    <string name="quotation_menu_refresh">Refresh</string>
 </resources>

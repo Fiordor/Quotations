@@ -15,7 +15,7 @@
     <string name="quotation_random_user">No soy nadie</string>
     <string name="favourite_cant_get_info">No se encuentra información sobre este autor</string>
     <string name="favourite_take_a_breath">Respira un segundo!</string>
-    <string name="favourite_are_you_sure">¿Estás seguro de querer borrar esta cita?</string>
+    <string name="favourite_are_you_sure">Estás seguro de querer borrar esta cita?</string>
     <string name="quotation_menu_add">Añadir</string>
     <string name="quotation_menu_refresh">Actualizar</string>
     <string name="favourite_menu_delete">Barrar todo</string>

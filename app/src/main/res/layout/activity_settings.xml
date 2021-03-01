@@ -7,4 +7,7 @@
     android:fillViewport="true"
     tools:context=".SettingsActivity">
 
+    <!--modifica el layaout para que las etiquetas definidas utilizen el nuevo estilo definido por
+     medio de su atributo android:style-->
+
 </ScrollView>

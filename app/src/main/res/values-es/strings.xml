@@ -20,4 +20,17 @@
     <string name="quotation_menu_refresh">Actualizar</string>
     <string name="favourite_menu_delete">Barrar todo</string>
     <string name="favourite_menu_are_you_sure">¿Estás seguro de que quieres borrar TODAS tus citas favoritas?</string>
+    <string name="settings_user_name">Nombre de usuario</string>
+    <string name="settings_user_summary">Nombre que identifica al usuario</string>
+    <string name="settings_web_service">Servicios web</string>
+    <string name="settings_quotation_language">Idioma de la cita</string>
+    <string name="settings_quotation_language_summary">La cita será dada en el idioma seleccionado</string>
+    <string name="settings_http_request">Tipo de petición HTTP</string>
+    <string name="settings_http_request_summary">La petición HTTP será lanzada por mediante la selección</string>
+    <string name="settings_database">Base de datos</string>
+    <string name="settings_database_access">Método de acceso a los datos</string>
+    <string name="settings_database_summary">El acceso a datos seguirá el método seleccionado</string>
+    <string name="settings_english">Inglés</string>
+    <string name="settings_russian">Ruso</string>
+    <string name="settings_user_hint">Escribe tu nombre de usuario</string>
 </resources>

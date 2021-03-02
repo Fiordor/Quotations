@@ -15,15 +15,15 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/bt_dash_get"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/custom_button"
+        android:onClick="dashUnifiedCallback"
+        android:text="@string/bt_dash_get"
         android:textColor="@color/custom_button"
         app:layout_constraintBottom_toTopOf="@+id/btFavourite"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="dashUnifiedCallback"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btFavourite"
@@ -31,17 +31,18 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/bt_dash_favourite"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/custom_button"
+        android:onClick="dashUnifiedCallback"
+        android:text="@string/bt_dash_favourite"
         android:textColor="@color/custom_button"
         app:layout_constraintBottom_toTopOf="@+id/btSettings"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btGet"
-        android:onClick="dashUnifiedCallback" />
+        app:layout_constraintTop_toBottomOf="@+id/btGet" />
 
     <Button
         android:id="@+id/btSettings"
@@ -49,16 +50,18 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="@string/bt_dash_settings"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/custom_button"
+        android:onClick="dashUnifiedCallback"
+        android:text="@string/bt_dash_settings"
         android:textColor="@color/custom_button"
         app:layout_constraintBottom_toTopOf="@+id/btAbout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btFavourite"
-        android:onClick="dashUnifiedCallback" />
+        app:layout_constraintTop_toBottomOf="@+id/btFavourite" />
 
     <Button
         android:id="@+id/btAbout"
@@ -66,15 +69,16 @@
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/bt_dash_about"
         android:background="@drawable/custom_button"
+        android:onClick="dashUnifiedCallback"
+        android:text="@string/bt_dash_about"
         android:textColor="@color/custom_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btSettings"
-        android:onClick="dashUnifiedCallback" />
+        app:layout_constraintTop_toBottomOf="@+id/btSettings" />
 </androidx.constraintlayout.widget.ConstraintLayout>

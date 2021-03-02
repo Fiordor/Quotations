@@ -21,4 +21,19 @@
     <string name="quotation_menu_refresh">Refresh</string>
     <string name="favourite_menu_delete">Clear All</string>
     <string name="favourite_menu_are_you_sure">Are you sure that you want to delete ALL your favourte quotations?</string>
+    <string name="settings_user_name">User Name</string>
+    <string name="settings_user_summary">Name that identifies user</string>
+    <string name="settings_web_service">Web services</string>
+    <string name="settings_quotation_language">Quotation language</string>
+    <string name="settings_quotation_language_summary">Quotation will be received in the selected language</string>
+    <string name="settings_http_request">HTTP request method</string>
+    <string name="settings_http_request_summary">Web request will be performed using the selected HTTP method</string>
+    <string name="settings_database">Database</string>
+    <string name="settings_database_access">Data access method</string>
+    <string name="settings_database_summary">Database will be accessed following the selected method</string>
+    <string name="settings_english">English</string>
+    <string name="settings_russian">Russian</string>
+    <string name="settings_get" translatable="false">GET</string>
+    <string name="settings_post" translatable="false">POST</string>
+    <string name="settings_user_hint">Enter your user name</string>
 </resources>

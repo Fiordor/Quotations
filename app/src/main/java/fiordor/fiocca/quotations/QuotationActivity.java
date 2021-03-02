@@ -2,7 +2,9 @@ package fiordor.fiocca.quotations;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +26,8 @@ public class QuotationActivity extends AppCompatActivity {
         tvAuthor = findViewById(R.id.tvAuthor);
 
         String text = tvQuotation.getText().toString();
-        tvQuotation.setText(String.format(text, getString(R.string.quotation_random_user)));
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        tvQuotation.setText(String.format(text, pref.getString("username", "")));
     }
 
     private void addToFavourite() {

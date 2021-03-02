@@ -9,8 +9,6 @@ import android.view.View;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    private final String TAG = "personaltag";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

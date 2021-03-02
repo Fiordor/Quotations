@@ -13,14 +13,14 @@
             android:title="@string/settings_quotation_language"
             android:summary="@string/settings_quotation_language_summary"
             android:entries="@array/string_language_options"
-            android:entryValues="@array/int_language_options" />
+            android:entryValues="@array/value_language_options" />
         <ListPreference />
         <ListPreference
             android:key="http"
             android:title="@string/settings_http_request"
             android:summary="@string/settings_http_request_summary"
             android:entries="@array/string_request_options"
-            android:entryValues="@array/int_request_options" />
+            android:entryValues="@array/value_request_options" />
         <ListPreference />
     </PreferenceCategory>
 

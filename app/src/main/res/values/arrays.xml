@@ -5,18 +5,18 @@
         <item>@string/settings_russian</item>
     </string-array>
 
-    <integer-array name="int_language_options">
-        <item>0</item>
-        <item>1</item>
-    </integer-array>
+    <string-array name="value_language_options">
+        <item>en</item>
+        <item>ru</item>
+    </string-array>
 
     <string-array name="string_request_options">
         <item>@string/settings_get</item>
         <item>@string/settings_post</item>
     </string-array>
 
-    <integer-array name="int_request_options">
-        <item>2</item>
-        <item>3</item>
-    </integer-array>
+    <string-array name="value_request_options">
+        <item>g</item>
+        <item>p</item>
+    </string-array>
 </resources>

@@ -16,11 +16,14 @@ import android.widget.TextView;
 
 import fiordor.fiocca.quotations.custom.Quotation;
 import fiordor.fiocca.quotations.database.QuotationSQLite;
+import fiordor.fiocca.quotations.database.QuotationsDatabase;
 
 public class QuotationActivity extends AppCompatActivity {
 
     private TextView tvQuotation;
     private TextView tvAuthor;
+
+    private String accessDB;
 
     private MenuItem miAdd;
 
@@ -36,9 +39,11 @@ public class QuotationActivity extends AppCompatActivity {
 
         numQuotes = 0;
 
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        accessDB = pref.getString("db", "");
+
         if (savedInstanceState == null) {
             String text = tvQuotation.getText().toString();
-            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
             tvQuotation.setText(String.format(text, pref.getString("username", "")));
         } else {
             tvQuotation.setText(savedInstanceState.getString("quote"));
@@ -52,7 +57,11 @@ public class QuotationActivity extends AppCompatActivity {
                 tvQuotation.getText().toString(),
                 tvAuthor.getText().toString());
 
-        QuotationSQLite.getInstance(this).addQuotation(q);
+        if (accessDB.equals("sqlite")) {
+            QuotationSQLite.getInstance(this).addQuotation(q);
+        } else {
+            QuotationsDatabase.getInstance(this).quotationDao().addQuotation(q);
+        }
         miAdd.setVisible(false);
     }
 
@@ -62,7 +71,15 @@ public class QuotationActivity extends AppCompatActivity {
                 String.format(getString(R.string.quotation_samlpe_quotation), n),
                 String.format(getString(R.string.quotation_sample_author), n) );
 
-        if (!QuotationSQLite.getInstance(this).existsQuotation(q.getQuoteText())) {
+        boolean exists = false;
+
+        if (accessDB.equals("sqlite")) {
+            exists = QuotationSQLite.getInstance(this).existsQuotation(q.getQuoteText());
+        } else {
+            exists = QuotationsDatabase.getInstance(this).quotationDao().findQuotation(q.getQuoteText()) != null;
+        }
+
+        if (!exists) {
             miAdd.setVisible(true);
         }
 

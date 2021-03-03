@@ -11,9 +11,10 @@ import fiordor.fiocca.quotations.database.QuotationContract;
 public class Quotation {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = QuotationContract.Columns.COLUMN_NAME_ID)
     private int id;
-    @ColumnInfo(name = QuotationContract.Columns.COLUMN_NAME_QUOTE)
     @NonNull
+    @ColumnInfo(name = QuotationContract.Columns.COLUMN_NAME_QUOTE)
     private String quoteText;
     @ColumnInfo(name = QuotationContract.Columns.COLUMN_NAME_AUTHOR)
     private String quoteAuthor;

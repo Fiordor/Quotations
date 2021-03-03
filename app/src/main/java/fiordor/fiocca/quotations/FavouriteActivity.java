@@ -3,12 +3,14 @@ package fiordor.fiocca.quotations;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -24,10 +26,12 @@ import java.util.List;
 import fiordor.fiocca.quotations.custom.FavouriteAdapter;
 import fiordor.fiocca.quotations.custom.Quotation;
 import fiordor.fiocca.quotations.database.QuotationSQLite;
+import fiordor.fiocca.quotations.database.QuotationsDatabase;
 
 public class FavouriteActivity extends AppCompatActivity implements FavouriteAdapter.OnItemClickListener, FavouriteAdapter.OnItemLongClickListener {
 
     private FavouriteAdapter quotationsAdapter;
+    private String accessDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,17 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(this, RecyclerView.VERTICAL);
         rv.addItemDecoration(decoration);
 
-        List<Quotation> quotations = QuotationSQLite.getInstance(this).getQuotations();
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
+        accessDB = pref.getString("db", "");
+
+        List<Quotation> quotations;
+
+        if (accessDB.equals("sqlite")) {
+            quotations = QuotationSQLite.getInstance(this).getQuotations();
+        } else {
+            quotations = QuotationsDatabase.getInstance(this).quotationDao().getQuotations();
+        }
+
         quotationsAdapter = new FavouriteAdapter(quotations, this::onItemClickListener, this::onItemLongClickListener);
         rv.setAdapter(quotationsAdapter);
     }
@@ -91,7 +105,11 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
 
                 Quotation q = quotationsAdapter.getQuoteUsingListPosition(position);
 
-                QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotation(q.getQuoteText());
+                if (accessDB.equals("sqlite")) {
+                    QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotation(q.getQuoteText());
+                } else {
+                    QuotationsDatabase.getInstance(FavouriteActivity.this).quotationDao().deleteQuotation(q);
+                }
 
                 quotationsAdapter.removeQuoteUsingListPosition(position);
             }
@@ -115,7 +133,11 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotations();
+                if (accessDB.equals("sqlite")) {
+                    QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotations();
+                } else {
+                    QuotationsDatabase.getInstance(FavouriteActivity.this).quotationDao().deleteQuotations();
+                }
 
                 quotationsAdapter.clearAllList();
                 item.setVisible(false);

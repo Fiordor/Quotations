@@ -31,6 +31,8 @@
     <string name="settings_database">Database</string>
     <string name="settings_database_access">Data access method</string>
     <string name="settings_database_summary">Database will be accessed following the selected method</string>
+    <string name="settings_room" translatable="false">Room</string>
+    <string name="settings_sqlite" translatable="false">SQLiteOpenHelper</string>
     <string name="settings_english">English</string>
     <string name="settings_russian">Russian</string>
     <string name="settings_get" translatable="false">GET</string>

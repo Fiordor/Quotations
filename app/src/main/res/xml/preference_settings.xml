@@ -23,5 +23,14 @@
             android:entryValues="@array/value_request_options" />
         <ListPreference />
     </PreferenceCategory>
+    <PreferenceCategory
+        android:title="@string/settings_database">
+        <ListPreference
+            android:key="db"
+            android:title="@string/settings_database_access"
+            android:summary="@string/settings_database_summary"
+            android:entries="@array/string_db_options"
+            android:entryValues="@array/value_db_options" />
+    </PreferenceCategory>
 
 </PreferenceScreen>

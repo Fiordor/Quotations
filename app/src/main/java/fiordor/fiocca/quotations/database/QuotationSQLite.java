@@ -46,12 +46,14 @@ public class QuotationSQLite extends SQLiteOpenHelper {
     public long addQuotation(Quotation quotation) {
 
         SQLiteDatabase database = getWritableDatabase();
-
         ContentValues values = new ContentValues();
+
         values.put(QuotationContract.Columns.COLUMN_NAME_QUOTE, quotation.getQuoteText());
         values.put(QuotationContract.Columns.COLUMN_NAME_AUTHOR, quotation.getQuoteAuthor());
+
         final long id = database.insert(QuotationContract.Columns.TABLE_NAME, null, values);
         database.close();
+
         return id;
     }
     public int deleteQuotation(String quote) {
@@ -61,8 +63,7 @@ public class QuotationSQLite extends SQLiteOpenHelper {
         int row = database.delete(
                 QuotationContract.Columns.TABLE_NAME,
                 QuotationContract.Columns.COLUMN_NAME_QUOTE + "=?",
-                new String[] {quote}
-        );
+                new String[] {quote});
 
         database.close();
         return row;

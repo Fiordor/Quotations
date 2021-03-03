@@ -6,6 +6,7 @@ import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +22,7 @@ public class QuotationActivity extends AppCompatActivity {
     private TextView tvQuotation;
     private TextView tvAuthor;
 
-    private Menu menu;
+    private MenuItem miAdd;
 
     private int numQuotes;
 
@@ -52,7 +53,7 @@ public class QuotationActivity extends AppCompatActivity {
                 tvAuthor.getText().toString());
 
         QuotationSQLite.getInstance(this).addQuotation(q);
-        menu.findItem(R.id.miAddToFavourite).setVisible(false);
+        miAdd.setVisible(false);
     }
 
     private void refreshFavourite(int n) {
@@ -62,7 +63,7 @@ public class QuotationActivity extends AppCompatActivity {
                 String.format(getString(R.string.quotation_sample_author), n) );
 
         if (!QuotationSQLite.getInstance(this).existsQuotation(q.getQuoteText())) {
-            menu.findItem(R.id.miAddToFavourite).setVisible(true);
+            miAdd.setVisible(true);
         }
 
         tvQuotation.setText(q.getQuoteText());
@@ -73,7 +74,7 @@ public class QuotationActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.quotation_menu, menu);
-        this.menu = menu;
+        miAdd = menu.findItem(R.id.miAddToFavourite);
 
         return true;
     }
@@ -82,8 +83,8 @@ public class QuotationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.miRefreshFavourite : refreshFavourite(++numQuotes); return true;
             case R.id.miAddToFavourite : addFavourite(); return true;
+            case R.id.miRefreshFavourite : refreshFavourite(++numQuotes); return true;
         }
 
         return super.onOptionsItemSelected(item);

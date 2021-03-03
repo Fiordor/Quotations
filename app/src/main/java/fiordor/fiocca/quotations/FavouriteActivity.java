@@ -23,6 +23,7 @@ import java.util.List;
 
 import fiordor.fiocca.quotations.custom.FavouriteAdapter;
 import fiordor.fiocca.quotations.custom.Quotation;
+import fiordor.fiocca.quotations.database.QuotationSQLite;
 
 public class FavouriteActivity extends AppCompatActivity implements FavouriteAdapter.OnItemClickListener, FavouriteAdapter.OnItemLongClickListener {
 
@@ -40,7 +41,7 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         RecyclerView.ItemDecoration decoration = new DividerItemDecoration(this, RecyclerView.VERTICAL);
         rv.addItemDecoration(decoration);
 
-        ArrayList<Quotation> quotations = getMockQuotations();
+        List<Quotation> quotations = QuotationSQLite.getInstance(this).getQuotations();
         quotationsAdapter = new FavouriteAdapter(quotations, this::onItemClickListener, this::onItemLongClickListener);
         rv.setAdapter(quotationsAdapter);
     }
@@ -87,6 +88,11 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                Quotation q = quotationsAdapter.getQuoteUsingListPosition(position);
+
+                QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotation(q.getQuoteText());
+
                 quotationsAdapter.removeQuoteUsingListPosition(position);
             }
         });
@@ -108,6 +114,9 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+
+                QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotations();
+
                 quotationsAdapter.clearAllList();
                 item.setVisible(false);
             }

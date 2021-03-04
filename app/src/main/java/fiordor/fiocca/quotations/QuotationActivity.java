@@ -65,6 +65,20 @@ public class QuotationActivity extends AppCompatActivity {
         miAdd.setVisible(false);
     }
 
+    private void exeOnThread(boolean add) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (add) {
+                    addFavourite();
+                } else {
+                    refreshFavourite(++numQuotes);
+                }
+            }
+        }).start();
+    }
+
     private void refreshFavourite(int n) {
 
         Quotation q = new Quotation(
@@ -100,8 +114,8 @@ public class QuotationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.miAddToFavourite : addFavourite(); return true;
-            case R.id.miRefreshFavourite : refreshFavourite(++numQuotes); return true;
+            case R.id.miAddToFavourite : exeOnThread(true); return true;
+            case R.id.miRefreshFavourite : exeOnThread(false); return true;
         }
 
         return super.onOptionsItemSelected(item);

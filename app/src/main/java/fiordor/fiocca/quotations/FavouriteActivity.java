@@ -60,6 +60,38 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         rv.setAdapter(quotationsAdapter);
     }
 
+    private void deleteQuotation(Quotation quotation) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (accessDB.equals("sqlite")) {
+                    QuotationSQLite.getInstance(FavouriteActivity.this)
+                            .deleteQuotation(quotation.getQuoteText());
+                } else {
+                    QuotationsDatabase.getInstance(FavouriteActivity.this)
+                            .quotationDao().deleteQuotation(quotation);
+                }
+            }
+        }).start();
+    }
+
+    private void deleteQuotations() {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (accessDB.equals("sqlite")) {
+                    QuotationSQLite.getInstance(FavouriteActivity.this)
+                            .deleteQuotations();
+                } else {
+                    QuotationsDatabase.getInstance(FavouriteActivity.this)
+                            .quotationDao().deleteQuotations();
+                }
+            }
+        }).start();
+    }
+
     public void openAuthorWiki(String author) {
 
         Intent intent = new Intent();
@@ -105,11 +137,7 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
 
                 Quotation q = quotationsAdapter.getQuoteUsingListPosition(position);
 
-                if (accessDB.equals("sqlite")) {
-                    QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotation(q.getQuoteText());
-                } else {
-                    QuotationsDatabase.getInstance(FavouriteActivity.this).quotationDao().deleteQuotation(q);
-                }
+                deleteQuotation(q);
 
                 quotationsAdapter.removeQuoteUsingListPosition(position);
             }
@@ -133,11 +161,7 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                if (accessDB.equals("sqlite")) {
-                    QuotationSQLite.getInstance(FavouriteActivity.this).deleteQuotations();
-                } else {
-                    QuotationsDatabase.getInstance(FavouriteActivity.this).quotationDao().deleteQuotations();
-                }
+                deleteQuotations();
 
                 quotationsAdapter.clearAllList();
                 item.setVisible(false);

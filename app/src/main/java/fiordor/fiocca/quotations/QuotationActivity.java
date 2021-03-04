@@ -129,7 +129,7 @@ public class QuotationActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        miAdd.setVisible(!exists);
+                        if (!exists) miAdd.setVisible(true);
                     }
                 });
             }

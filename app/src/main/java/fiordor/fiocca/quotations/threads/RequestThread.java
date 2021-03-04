@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.lang.ref.WeakReference;
 import java.net.URL;
 
@@ -37,6 +39,18 @@ public class RequestThread extends Thread {
         });
     }
 
+    private Uri.Builder getUriBuilder() {
+
+        Uri.Builder builder = new Uri.Builder();
+        builder.scheme("https");
+        builder.authority("api.forismatic.com");
+        builder.appendPath("api");
+        builder.appendPath("1.0");
+        builder.appendPath("");
+
+        return builder;
+    }
+
     private void startLoad() {
         weakReference.get().runOnUiThread(new Runnable() {
             @Override
@@ -46,7 +60,6 @@ public class RequestThread extends Thread {
         });
     }
 
-
     @Override
     public void run() {
 
@@ -55,34 +68,45 @@ public class RequestThread extends Thread {
         startLoad();
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(weakReference.get());
+        String method = pref.getString("http","GET");
+        String language = pref.getString("language", "en");
 
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("https");
-        builder.authority("api.forismatic.com");
-        builder.appendPath("api");
-        builder.appendPath("1.0");
-        builder.appendPath("");
-        builder.appendQueryParameter("method", "getQuote");
-        builder.appendQueryParameter("format", "json");
-        builder.appendQueryParameter("lang", pref.getString("language", "en"));
+        Log.d("personaltag", method);
+
+        String body = "method=getQuote&format=json&lang=" + language;
 
         final  Quotation quotation;
         Quotation loadQuotation = null;
 
+        Uri.Builder builder = getUriBuilder();
+        if (method.equals("GET")) {
+            builder.appendQueryParameter("method", "getQuote");
+            builder.appendQueryParameter("format", "json");
+            builder.appendQueryParameter("lang", language);
+        }
+
         try {
             URL url = new URL(builder.build().toString());
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            connection.setRequestMethod(method);
             connection.setDoInput(true);
 
+            if (method.equals("POST")) {
+
+                connection.setDoOutput(true);
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+                writer.write(body);;
+                writer.flush();
+                writer.close();
+            }
+
             InputStreamReader reader = new InputStreamReader(connection.getInputStream());
-
             loadQuotation = new Gson().fromJson(reader, Quotation.class);
-
             reader.close();
+
             connection.disconnect();
-        } catch (IOException ex) {
-            String error = weakReference.get().getString(R.string.quotation_error);
+        } catch (Exception ex) {
+            String error = weakReference.get().getString(R.string.quotation_error) + ": " + ex.getMessage();
             loadQuotation = new Quotation(error, "");
         } finally {
             quotation = loadQuotation;

@@ -16,8 +16,8 @@
     </string-array>
 
     <string-array name="value_request_options">
-        <item>g</item>
-        <item>p</item>
+        <item>GET</item>
+        <item>POST</item>
     </string-array>
     
     <string-array name="string_db_options">

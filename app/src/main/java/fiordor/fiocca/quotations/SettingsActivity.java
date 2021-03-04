@@ -21,9 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
                 .setReorderingAllowed(true)
                 .replace(R.id.fr_settings, SettingsFragment.class, null)
                 .commit();
-
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        Toast.makeText(this, ("Valor: " + pref.getString("username", "no encontrado")), Toast.LENGTH_LONG).show();
     }
 
     @Override

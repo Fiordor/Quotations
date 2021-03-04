@@ -5,6 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkCapabilities;
+import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -53,6 +58,24 @@ public class QuotationActivity extends AppCompatActivity {
             tvQuotation.setText(savedInstanceState.getString("quote"));
             tvAuthor.setText(savedInstanceState.getString("author"));
         }
+    }
+
+    public boolean isConnected() {
+
+        ConnectivityManager manager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT < 23) {
+            NetworkInfo network = manager.getActiveNetworkInfo();
+            return ( (network != null) && network.isConnected() );
+        } else {
+            Network network = manager.getActiveNetwork();
+            if (network != null) {
+                NetworkCapabilities netCapabilities = manager.getNetworkCapabilities(network);
+                return netCapabilities != null && (
+                        netCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                        netCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) );
+            }
+        }
+        return false;
     }
 
     public void setLoadingOff(Quotation quotation) {
@@ -129,9 +152,12 @@ public class QuotationActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.miAddToFavourite : addFavourite(); return true;
-            case R.id.miRefreshFavourite : new RequestThread(this).start(); return true;
+            case R.id.miRefreshFavourite :
+                if (isConnected()) {
+                    new RequestThread(this).start();
+                }
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

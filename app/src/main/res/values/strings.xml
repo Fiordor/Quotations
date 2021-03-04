@@ -11,9 +11,10 @@
     <string name="about_info" translatable="false">Quotation Shake by\n\nFernando Fiocca\n\nferfiopa@inf.upv.es\n\n2020</string>
     <string name="favourite_bt_info">Author info</string>
     <string name="quotation_hello">Hello %1s!\nPress Refresh to get a new quotation</string>
-    <string name="quotation_samlpe_quotation">Sample quote %1$d</string>
+    <string name="quotation_sample_quotation">Sample quote %1$d</string>
     <string name="quotation_sample_author">Sample author %1$d</string>
     <string name="quotation_random_user">Nameless One</string>
+    <string name="quotation_error">Error when request the quote to web service</string>
     <string name="favourite_cant_get_info">Can not find information about this author</string>
     <string name="favourite_take_a_breath">Take a breath!</string>
     <string name="favourite_are_you_sure">Are you sure that you want to delete this quotation?</string>

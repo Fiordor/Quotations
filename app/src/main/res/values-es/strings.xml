@@ -10,7 +10,6 @@
     <string name="name_activity_about">Acerca de</string>
     <string name="favourite_bt_info">Información del autor</string>
     <string name="quotation_hello">Hola %1s!\nPulsa Refrescar para solicitar una nueva cita</string>
-    <string name="quotation_samlpe_quotation">Ejemplo de cita %1$d</string>
     <string name="quotation_sample_author">Ejemplo de autor %1$d</string>
     <string name="quotation_random_user">No soy nadie</string>
     <string name="favourite_cant_get_info">No se encuentra información sobre este autor</string>
@@ -33,4 +32,6 @@
     <string name="settings_english">Inglés</string>
     <string name="settings_russian">Ruso</string>
     <string name="settings_user_hint">Escribe tu nombre de usuario</string>
+    <string name="quotation_sample_quotation">Ejemplo de cita %1$d</string>
+    <string name="quotation_error">Error al solicitar la cita al sevidor web</string>
 </resources>

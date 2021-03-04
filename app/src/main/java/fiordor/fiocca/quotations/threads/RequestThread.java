@@ -71,8 +71,6 @@ public class RequestThread extends Thread {
         String method = pref.getString("http","GET");
         String language = pref.getString("language", "en");
 
-        Log.d("personaltag", method);
-
         String body = "method=getQuote&format=json&lang=" + language;
 
         final  Quotation quotation;

@@ -62,7 +62,13 @@ public class QuotationActivity extends AppCompatActivity {
         } else {
             QuotationsDatabase.getInstance(this).quotationDao().addQuotation(q);
         }
-        miAdd.setVisible(false);
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                miAdd.setVisible(false);
+            }
+        });
     }
 
     private void exeOnThread(boolean add) {
@@ -85,7 +91,7 @@ public class QuotationActivity extends AppCompatActivity {
                 String.format(getString(R.string.quotation_samlpe_quotation), n),
                 String.format(getString(R.string.quotation_sample_author), n) );
 
-        boolean exists = false;
+        final boolean exists;
 
         if (accessDB.equals("sqlite")) {
             exists = QuotationSQLite.getInstance(this).existsQuotation(q.getQuoteText());
@@ -93,12 +99,15 @@ public class QuotationActivity extends AppCompatActivity {
             exists = QuotationsDatabase.getInstance(this).quotationDao().findQuotation(q.getQuoteText()) != null;
         }
 
-        if (!exists) {
-            miAdd.setVisible(true);
-        }
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                miAdd.setVisible(!exists);
 
-        tvQuotation.setText(q.getQuoteText());
-        tvAuthor.setText(q.getQuoteAuthor());
+                tvQuotation.setText(q.getQuoteText());
+                tvAuthor.setText(q.getQuoteAuthor());
+            }
+        });
     }
 
     @Override

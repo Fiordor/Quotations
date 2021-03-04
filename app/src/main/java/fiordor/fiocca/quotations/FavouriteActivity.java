@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -27,18 +28,23 @@ import fiordor.fiocca.quotations.custom.FavouriteAdapter;
 import fiordor.fiocca.quotations.custom.Quotation;
 import fiordor.fiocca.quotations.database.QuotationSQLite;
 import fiordor.fiocca.quotations.database.QuotationsDatabase;
+import fiordor.fiocca.quotations.threads.ReadDBThread;
 
 public class FavouriteActivity extends AppCompatActivity implements FavouriteAdapter.OnItemClickListener, FavouriteAdapter.OnItemLongClickListener {
 
     private FavouriteAdapter quotationsAdapter;
+    private RecyclerView rv;
     private String accessDB;
+    private MenuItem miClear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favourite);
 
-        RecyclerView rv = findViewById(R.id.rvFavourite);
+        miClear = null;
+
+        rv = findViewById(R.id.rvFavourite);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         rv.setLayoutManager(manager);
 
@@ -48,16 +54,43 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         accessDB = pref.getString("db", "");
 
-        List<Quotation> quotations;
+        List<Quotation> quotations = new ArrayList<>();
 
+        /*
         if (accessDB.equals("sqlite")) {
             quotations = QuotationSQLite.getInstance(this).getQuotations();
         } else {
             quotations = QuotationsDatabase.getInstance(this).quotationDao().getQuotations();
         }
+        */
+        quotationsAdapter = new FavouriteAdapter(new ArrayList<Quotation>(), this::onItemClickListener, this::onItemLongClickListener);
+        rv.setAdapter(quotationsAdapter);
+
+        ReadDBThread read = new ReadDBThread(this, accessDB);
+        read.start();
+    }
+
+    public void iniAdapter(List<Quotation> quotations) {
+
+        if (quotations.size() == 0) {
+            setClearVisible(false);
+        }
 
         quotationsAdapter = new FavouriteAdapter(quotations, this::onItemClickListener, this::onItemLongClickListener);
         rv.setAdapter(quotationsAdapter);
+    }
+
+    public void openAuthorWiki(String author) {
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Special:Search?search=" + author));
+
+        List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+
+        if (activities.size() > 0) {
+            startActivity(intent);
+        }
     }
 
     private void deleteQuotation(Quotation quotation) {
@@ -92,16 +125,9 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         }).start();
     }
 
-    public void openAuthorWiki(String author) {
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse("https://en.wikipedia.org/wiki/Special:Search?search=" + author));
-
-        List<ResolveInfo> activities = getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
-
-        if (activities.size() > 0) {
-            startActivity(intent);
+    private void setClearVisible(boolean visible) {
+        if (miClear != null) {
+            miClear.setVisible(visible);
         }
     }
 
@@ -109,6 +135,9 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.favourite_menu, menu);
+        miClear = menu.findItem(R.id.miCleanAllFavourite);
+        miClear.setVisible(quotationsAdapter.getItemCount() != 0);
+
         return true;
     }
 
@@ -136,10 +165,9 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
             public void onClick(DialogInterface dialog, int which) {
 
                 Quotation q = quotationsAdapter.getQuoteUsingListPosition(position);
-
                 deleteQuotation(q);
-
                 quotationsAdapter.removeQuoteUsingListPosition(position);
+                setClearVisible(quotationsAdapter.getItemCount() != 0);
             }
         });
         builder.setNegativeButton(android.R.string.no, null);
@@ -164,7 +192,8 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
                 deleteQuotations();
 
                 quotationsAdapter.clearAllList();
-                item.setVisible(false);
+
+                setClearVisible(false);
             }
         });
         builder.setNegativeButton(android.R.string.no, null);

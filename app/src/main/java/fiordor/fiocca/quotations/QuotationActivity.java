@@ -12,22 +12,27 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import fiordor.fiocca.quotations.custom.Quotation;
 import fiordor.fiocca.quotations.database.QuotationSQLite;
 import fiordor.fiocca.quotations.database.QuotationsDatabase;
+import fiordor.fiocca.quotations.threads.RequestThread;
 
 public class QuotationActivity extends AppCompatActivity {
 
     private TextView tvQuotation;
     private TextView tvAuthor;
+    private ProgressBar pb;
 
     private String accessDB;
 
+    private Menu menu;
     private MenuItem miAdd;
+    private MenuItem miRefresh;
 
-    private int numQuotes;
+    private Quotation quotationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +41,7 @@ public class QuotationActivity extends AppCompatActivity {
 
         tvQuotation = findViewById(R.id.tvQuotation);
         tvAuthor = findViewById(R.id.tvAuthor);
-
-        numQuotes = 0;
+        pb = findViewById(R.id.progressBar);
 
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         accessDB = pref.getString("db", "");
@@ -51,70 +55,71 @@ public class QuotationActivity extends AppCompatActivity {
         }
     }
 
-    private void addFavourite() {
+    public void setLoadingOff(Quotation quotation) {
 
-        Quotation q = new Quotation(
-                tvQuotation.getText().toString(),
-                tvAuthor.getText().toString());
+        miRefresh.setVisible(true);
+        pb.setVisibility(View.INVISIBLE);
 
-        if (accessDB.equals("sqlite")) {
-            QuotationSQLite.getInstance(this).addQuotation(q);
-        } else {
-            QuotationsDatabase.getInstance(this).quotationDao().addQuotation(q);
-        }
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                miAdd.setVisible(false);
-            }
-        });
+        refreshFavourite(quotation);
     }
 
-    private void exeOnThread(boolean add) {
+    public void setLoadingOn() {
+
+        miAdd.setVisible(false);
+        miRefresh.setVisible(false);
+        pb.setVisibility(View.VISIBLE);
+    }
+
+    private void addFavourite() {
+
+        miAdd.setVisible(false);
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (add) {
-                    addFavourite();
+                if (accessDB.equals("sqlite")) {
+                    QuotationSQLite.getInstance(QuotationActivity.this).addQuotation(quotationView);
                 } else {
-                    refreshFavourite(++numQuotes);
+                    QuotationsDatabase.getInstance(QuotationActivity.this).quotationDao().addQuotation(quotationView);
                 }
             }
         }).start();
     }
+    private void refreshFavourite(Quotation q) {
 
-    private void refreshFavourite(int n) {
+        tvQuotation.setText(q.getQuoteText());
+        tvAuthor.setText(q.getQuoteAuthor());
+        quotationView = q;
 
-        Quotation q = new Quotation(
-                String.format(getString(R.string.quotation_samlpe_quotation), n),
-                String.format(getString(R.string.quotation_sample_author), n) );
-
-        final boolean exists;
-
-        if (accessDB.equals("sqlite")) {
-            exists = QuotationSQLite.getInstance(this).existsQuotation(q.getQuoteText());
-        } else {
-            exists = QuotationsDatabase.getInstance(this).quotationDao().findQuotation(q.getQuoteText()) != null;
-        }
-
-        runOnUiThread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
-                miAdd.setVisible(!exists);
 
-                tvQuotation.setText(q.getQuoteText());
-                tvAuthor.setText(q.getQuoteAuthor());
+                final boolean exists;
+
+                if (accessDB.equals("sqlite")) {
+                    exists = QuotationSQLite.getInstance(QuotationActivity.this).existsQuotation(q.getQuoteText());
+                } else {
+                    exists = QuotationsDatabase.getInstance(QuotationActivity.this).quotationDao().findQuotation(q.getQuoteText()) != null;
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        miAdd.setVisible(!exists);
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.quotation_menu, menu);
+        this.menu = menu;
         miAdd = menu.findItem(R.id.miAddToFavourite);
+        miRefresh = menu.findItem(R.id.miRefreshFavourite);
 
         return true;
     }
@@ -123,8 +128,8 @@ public class QuotationActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.miAddToFavourite : exeOnThread(true); return true;
-            case R.id.miRefreshFavourite : exeOnThread(false); return true;
+            case R.id.miAddToFavourite : addFavourite(); return true;
+            case R.id.miRefreshFavourite : new RequestThread(this).start(); return true;
         }
 
         return super.onOptionsItemSelected(item);

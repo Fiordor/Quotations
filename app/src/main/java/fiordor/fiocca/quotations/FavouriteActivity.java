@@ -54,15 +54,6 @@ public class FavouriteActivity extends AppCompatActivity implements FavouriteAda
         SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
         accessDB = pref.getString("db", "");
 
-        List<Quotation> quotations = new ArrayList<>();
-
-        /*
-        if (accessDB.equals("sqlite")) {
-            quotations = QuotationSQLite.getInstance(this).getQuotations();
-        } else {
-            quotations = QuotationsDatabase.getInstance(this).quotationDao().getQuotations();
-        }
-        */
         quotationsAdapter = new FavouriteAdapter(new ArrayList<Quotation>(), this::onItemClickListener, this::onItemLongClickListener);
         rv.setAdapter(quotationsAdapter);
 
